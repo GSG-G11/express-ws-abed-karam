@@ -4,6 +4,10 @@ const app = express();
 
 // serve Hello New York on the /new-york, /newyork paths
 
+app.get('/cities/newyork', (req, res) => {
+  res.send('Hello New York');
+});
+
 app.listen(3000, () => {
   console.log('App running on port 3000');
 });

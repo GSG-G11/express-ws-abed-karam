@@ -1,34 +1,18 @@
 const express = require('express');
 const path = require('path');
 const compression = require('compression');
-
+const router = require('./controllers/index');
 const app = express();
 
 app.disable('x-powered-by');
 app.set('port', process.env.PORT || 3000);
 app.use(compression());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(
-  express.static(path.join(__dirname, '..', 'public'), { maxAge: '30d' })
-);
+app.use(express.urlencoded({extended: false}));
 
-app.get('/fruit', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'fruit.html'));
-});
+app.use(router);
 
-app.post('/fruit', (req, res) => {
-  console.log(req.body.name, req.body.image_url);
-  res.redirect('/fruit');
-});
-
-app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, '..', 'public', '404.html'));
-});
-
-app.use((err, req, res, next) => {
-  res.status(500).sendFile(path.join(__dirname, '..', 'public', '500.html'));
-});
+app.use(express.static(path.join(__dirname, '..', 'public'), {maxAge: '30d'}));
 
 app.listen(app.get('port'), () => {
   console.log('App running on port', app.get('port'));
